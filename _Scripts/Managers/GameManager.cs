@@ -7,14 +7,18 @@ public class GameManager : MonoBehaviour
     #region Variables
     [SerializeField] private int wallet = 10;
     [SerializeField] private int originBaseLife = 100;
+    [SerializeField] private GameObject enemySpawn;
 
     private int _currentBaseLife;
+    private bool _wavesEnded = false;
+    private int _enemyAliveNumber = 0;
 
     public static GameManager instance;
     private UIManager _UI;
 	#endregion
 	
 	#region Properties
+    public int Wallet => wallet;
 	#endregion
 	
 	#region Built in Methods
@@ -33,12 +37,8 @@ public class GameManager : MonoBehaviour
         _UI.UpdateMoney(wallet);
         _UI.UpdateLife(originBaseLife);
 
+        Time.timeScale = 1;
         _currentBaseLife = originBaseLife;
-    }
-
-    void Update()
-    {
-        
     }
 	#endregion
 	
@@ -76,8 +76,27 @@ public class GameManager : MonoBehaviour
         _UI.UpdateLife(_currentBaseLife);
     }
 
-    private void GameOver(){
-        print("Perdu");
+    public void GameOver(){
+        for (int i = 0; i < enemySpawn.transform.childCount; i++){
+            Destroy(enemySpawn.transform.GetChild(i).gameObject);
+        }
+        _UI.GameOver();
+        Time.timeScale = 0;
+    }
+
+    public void AddEnemyAlive(){
+        _enemyAliveNumber++;
+    }
+
+    public void RemoveEnemyAlive(){
+        _enemyAliveNumber--;
+        if (_wavesEnded && _enemyAliveNumber == 0){
+            _UI.Win();
+        }
+    }
+
+    public void WavesEnded(){
+        _wavesEnded = true;
     }
 	#endregion
 }

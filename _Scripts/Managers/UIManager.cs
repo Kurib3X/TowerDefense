@@ -8,6 +8,8 @@ public class UIManager : MonoBehaviour
     #region Variables
     [SerializeField] private TMP_Text money;
     [SerializeField] private TMP_Text life;
+    [SerializeField] private GameObject gameOver;
+    [SerializeField] private GameObject win;
 
     public static UIManager instance;
 	#endregion
@@ -24,16 +26,6 @@ public class UIManager : MonoBehaviour
         }
         instance = this;
     }
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
 	#endregion
 	
 	#region Custom Methods
@@ -43,6 +35,14 @@ public class UIManager : MonoBehaviour
 
     public void UpdateLife(int lifeToUpdate){
         life.text = "Life : " + lifeToUpdate.ToString();
+    }
+
+    public void GameOver(){
+        gameOver.SetActive(true);
+    }
+
+    public void Win(){
+        win.SetActive(true);
     }
 	#endregion
 }

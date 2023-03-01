@@ -44,7 +44,7 @@ public class Enemy : MonoBehaviour
     private void OnTriggerEnter(Collider other){
         if (other.gameObject.layer == LayerMask.NameToLayer("Base")){
             _GM.RemoveLife(1);
-            Destroy(gameObject);
+            Death();
         }
         if (other.gameObject.layer == LayerMask.NameToLayer("Projectile")){
             TakeDamage(other.gameObject.GetComponent<Projectile>().Damage);
@@ -80,12 +80,18 @@ public class Enemy : MonoBehaviour
         _currentLife -= amount;
         if (_currentLife <= 0){
             Death();
+            EarnMoney();
         }
     }
 
     private void Death(){
-        _GM.AddMoney(moneyDrop);
+        _GM.RemoveEnemyAlive();
+        GetComponent<BoxCollider>().enabled = false;
         Destroy(gameObject);
+    }
+
+    private void EarnMoney(){
+        _GM.AddMoney(moneyDrop);
     }
 	#endregion
 }

@@ -38,7 +38,8 @@ public class TemplateController : MonoBehaviour
                 if (!ts.IsBusy){
                     if (_GM.RemoveMoney(cost)){
                         ts.IsBusy = true;
-                        Instantiate(tower, hit.transform.GetChild(0).transform.position, Quaternion.identity);
+                        GameObject newTower = Instantiate(tower, hit.transform.GetChild(0).transform.position, Quaternion.identity);
+                        newTower.GetComponent<TowerCharacteristics>().TowerSpawnerGO = hit.collider.gameObject;
                         Destroy(gameObject);
                     }
                 }

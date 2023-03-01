@@ -11,15 +11,6 @@ public class TowerMachineGun : TowerAttack
 	#endregion
 	
 	#region Built in Methods
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
 	#endregion
 	
 	#region Custom Methods

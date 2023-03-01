@@ -13,6 +13,8 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private Transform target;
 
     [SerializeField] private GameObject enemy;
+
+    private GameManager _GM;
     
     private int _currentWave;
 	#endregion
@@ -23,12 +25,8 @@ public class WaveManager : MonoBehaviour
 	#region Built in Methods
     void Start()
     {
+        _GM = GameManager.instance;
         StartCoroutine(RunWaves());
-    }
-
-    void Update()
-    {
-        
     }
 	#endregion
 	
@@ -38,14 +36,20 @@ public class WaveManager : MonoBehaviour
         if (_currentWave <= nbWaves){
             for (int i = 0; i < nbEnemies; i++){
                 GameObject newEnemy = Instantiate(enemy, enemySpawner.position, Quaternion.identity);
+                newEnemy.transform.parent = enemySpawner.transform;
                 newEnemy.GetComponent<Enemy>().Target = target;
                 newEnemy.name = "Enemy : " + i.ToString();
+                _GM.AddEnemyAlive();
                 yield return new WaitForSeconds(spawnCoolDown);
             }
-            yield return new WaitForSeconds(timeBetweenWaves);
-            StartCoroutine(RunWaves());
+            if (_currentWave == nbWaves){
+                _GM.WavesEnded();
+            }
+            else{
+                yield return new WaitForSeconds(timeBetweenWaves);
+                StartCoroutine(RunWaves());
+            }
         }
-        yield return null;
     }
 	#endregion
 }
